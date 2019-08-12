@@ -1,8 +1,20 @@
 'use strict';
+
 var learnjs = {}; // 名前空間を作成
 
+learnjs.problemView = function() {
+  return $('<div class="problem-view">').text('Coming soon!');
+}
+
 learnjs.showView = function(hash) {
-  // divを追加するハードコードを実施
-  var problemView = $('<div class="problem-view">').text('Coming soon!');
-  $('.view-container').empty().append(problemView);
+
+  // routerを導入する
+  var routes = {
+    '#problem-1': learnjs.problemView
+  };
+
+  var viewFn = routes[hash];
+  if (viewFn) { // 想定されたrouterが存在した場合
+    $('.view-container').empty().append(viewFn());
+  } // ハッシュがルートにマッチしない場合は何もしない
 }
