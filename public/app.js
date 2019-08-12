@@ -2,19 +2,30 @@
 
 var learnjs = {}; // 名前空間を作成
 
-learnjs.problemView = function() {
-  return $('<div class="problem-view">').text('Coming soon!');
+// 問題を作成する
+learnjs.problemView = function(problemNumber) {
+  var view = $('.templates .problem-view').clone();
+  view.find('.title').text('Problem #' + problemNumber + ' Coming soon!');
+  return view;
 }
 
 learnjs.showView = function(hash) {
 
   // routerを導入する
   var routes = {
-    '#problem-1': learnjs.problemView
+    '#problem': learnjs.problemView
   };
+  var hashParts = hash.split('-');
 
-  var viewFn = routes[hash];
+  var viewFn = routes[hashParts[0]];
   if (viewFn) { // 想定されたrouterが存在した場合
-    $('.view-container').empty().append(viewFn());
+    $('.view-container').empty().append(viewFn(hashParts[1]));
   } // ハッシュがルートにマッチしない場合は何もしない
+}
+
+learnjs.appOnReady = function() {
+  window.onhashchange = function() {
+    learnjs.showView(window.location.hash);
+  };
+  learnjs.showView(window.location.hash);
 }
