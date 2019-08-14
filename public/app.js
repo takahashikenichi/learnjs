@@ -2,6 +2,19 @@
 
 var learnjs = {}; // 名前空間を作成
 
+// source[learnjs/3100/public/app.js] {
+learnjs.problems = [
+  {
+    description: "What is truth?",
+    code: "function problem() {return __; }"
+  },
+  {
+    description: "Simple Math",
+    code: "function problem() { return 42 === 6 + __; }"
+  }
+];
+//}
+
 // 問題を作成する
 learnjs.problemView = function(problemNumber) {
   var view = $('.templates .problem-view').clone();
