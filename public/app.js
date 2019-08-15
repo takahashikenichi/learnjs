@@ -15,6 +15,14 @@ learnjs.problems = [
 ];
 //}
 
+learnjs.triggerEvent = function(name, args) {
+  $('.view-container>*').trigger(name, args);
+}
+
+learnjs.landingView = function() {
+  return learnjs.template('landing-view');
+}
+
 learnjs.applyObject = function(obj, elem) {
   for (var key in obj) {
     elem.find('[data-name="' + key + '"]').text(obj[key]);
@@ -72,6 +80,15 @@ learnjs.problemView = function(data) {
     }
     return false;
   }
+
+  if (problemNumber < learnjs.problems.length) {
+    var buttonItem = learnjs.template('skip-btn');
+    buttonItem.find('a').attr('href', '#problem-' + (problemNumber + 1));
+    $('.nav-list').append(buttonItem);
+    view.bind('removingView', function() {
+      buttonItem.remove();
+    });
+  }
   
   view.find('.check-btn').click(checkAnswerClick);
   view.find('.title').text('Problem #' + problemNumber);
@@ -83,12 +100,15 @@ learnjs.showView = function(hash) {
 
   // routerを導入する
   var routes = {
-    '#problem': learnjs.problemView
+    '#problem': learnjs.problemView,
+    '':learnjs.landingView
   };
+
   var hashParts = hash.split('-');
 
   var viewFn = routes[hashParts[0]];
   if (viewFn) { // 想定されたrouterが存在した場合
+    learnjs.triggerEvent('removingView', []); // スキップボタンのため
     $('.view-container').empty().append(viewFn(hashParts[1]));
   } // ハッシュがルートにマッチしない場合は何もしない
 }
