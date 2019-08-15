@@ -6,7 +6,7 @@ var learnjs = {}; // 名前空間を作成
 learnjs.problems = [
   {
     description: "What is truth?",
-    code: "function problem() {return __; }"
+    code: "function problem() { return __; }"
   },
   {
     description: "Simple Math",
@@ -15,10 +15,18 @@ learnjs.problems = [
 ];
 //}
 
+learnjs.applyObject = function(obj, elem) {
+  for (var key in obj) {
+    elem.find('[data-name="' + key + '"]').text(obj[key]);
+  }
+}
+
 // 問題を作成する
-learnjs.problemView = function(problemNumber) {
+learnjs.problemView = function(data) {
+  var problemNumber = parseInt(data, 10);
   var view = $('.templates .problem-view').clone();
-  view.find('.title').text('Problem #' + problemNumber + ' Coming soon!');
+  view.find('.title').text('Problem #' + problemNumber);
+  learnjs.applyObject(learnjs.problems[problemNumber - 1], view);
   return view;
 }
 
